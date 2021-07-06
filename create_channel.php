@@ -48,6 +48,8 @@
         description,channel_bin_video_id, channel_bin_member_id) VALUES ('".$_POST['name']."','".$date_id."','".$profile_id."',
         '".$_POST['description']."','".$channel_bin_video_id."','".$channel_bin_member_id."')";
         $result = pg_query($db_connection, $sql);
+
+        
 }}
 ?>
 <body>

@@ -9,14 +9,20 @@
 <?php
     if( (isset($_POST['vid_id'])  ) && isset($_POST['userid']) ){
         if(($_POST['vid_id']!="" )  ) {
-            $sql = "SELECT video.like_bin_id FROM public.video WHERE video.id='".$_POST['vid_id']."'";
+            $sql = "SELECT video.watched_number FROM public.video WHERE video.id='".$_POST['vid_id']."'";
             $result = pg_query($db_connection, $sql);
             $like_bin_id = pg_fetch_result($result, 0 , 0); // all likes related sp. video
+            echo "watched_number: ".$like_bin_id."";
 
-            if(isset($_POST["submit"])){
-                $sql="SELECT * FROM like_bin WHERE like_bin.id='".$like_bin_id."' and like_bin.user_id='".$_POST['userid']."'";
-                $result = pg_query($db_connection, $sql);
-                $rows = pg_num_rows($result);   //all likes related sp. video and user
+            $sql="SELECT * FROM like_bin WHERE like_bin.id='".$like_bin_id."' and like_bin.liked='1'";
+            $result = pg_query($db_connection, $sql);
+            $rows = pg_num_rows($result);   //all likes related sp. video and user
+            echo "likes: ".$rows."";
+
+            $sql="SELECT * FROM like_bin WHERE like_bin.id='".$like_bin_id."' and like_bin.liked='0'";
+            $result = pg_query($db_connection, $sql);
+            $rows = pg_num_rows($result);   //all likes related sp. video and user
+            echo "dislikes: ".$rows."";
 
                 if($rows==0){
                     $sql="SELECT * FROM like_bin WHERE like_bin.id='".$like_bin_id."'";
@@ -33,21 +39,6 @@
                     $result = pg_query($db_connection, $sql);
                 }
             }
-            if(isset($_POST["submit2"])){ 
-                $sql="SELECT * FROM like_bin WHERE like_bin.id='".$like_bin_id."' and like_bin.user_id='".$_POST['userid']."'";
-                $result = pg_query($db_connection, $sql);
-                $rows = pg_num_rows($result);   //num rows
-                
-                if($rows==0){
-                    echo "user didnt like this post";
-                }
-                else{
-                    $like_id = pg_fetch_result($result, $rows-1 , 0);   // last id
-
-                    $sql = "UPDATE like_bin SET id=".$like_id.",liked='0',user_id='".$_POST['userid']."',video_id='".$_POST['vid_id']."' WHERE like_bin.id='".$like_bin_id."' and like_bin.user_id='".$_POST['userid']."'";
-                    $result = pg_query($db_connection, $sql);
-                }
-            }
         }
     }
 ?>
@@ -58,8 +49,7 @@
             <span class="col-2">اپلود ویدوئو در  کانال</span>
                 <input class=" col-md-2 form-control" name="userid" type="text" placeholder="یوزرآیدی">
                 <input class=" col-md-2 form-control" name="vid_id" type="text" placeholder=" آیدی ویدئو">
-                <input class="col-md-2 form-control alert-success" type="submit" name="submit" value="لایک">
-                <input class="col-md-2 form-control alert-success" type="submit" name="submit2" value="دیس لایک">
+                <input class="col-md-2 form-control alert-success" type="submit" name="submit" value="ok">
             </div>
             </form>
             </div>
