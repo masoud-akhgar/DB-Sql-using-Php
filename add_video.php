@@ -9,6 +9,7 @@
 <?php
 if (isset($_POST['userid'])){
     if (isset($_POST['name']) && isset($_POST['description']) && isset($_POST['pass']) && isset($_POST['dy']) && isset($_POST['dy2']) && isset($_POST['dy3'])){
+        if ($_POST['name']!="" && $_POST['description']!=""){
         $sql = "INSERT INTO image (image_source) VALUES ('".$_POST['img']."')";
         $result = pg_query($db_connection, $sql);   
     
@@ -25,29 +26,31 @@ if (isset($_POST['userid'])){
         $rows = pg_num_rows($result);   //num row
         $date_id = pg_fetch_result($result, $rows-1 , 0);   // last id
         /////////////////////////////////////////////////////////////////////////////////////////
-        $sql = "INSERT INTO comment_bin (comment_id) VALUES ('0')";
-        $result = pg_query($db_connection, $sql);
-
         $sql="SELECT * FROM comment_bin";
         $result = pg_query($db_connection, $sql);
         $rows = pg_num_rows($result);   //num row
         $comment_bin_id = pg_fetch_result($result, $rows-1 , 0);   // last id
-        /////////////////////////////////////////////////////////////////////////////////////////
-        $sql = "INSERT INTO video_bin (liked,user_id,video_id) VALUES ('0','0','0')";
-        $result = pg_query($db_connection, $sql);
+        $comment_bin_id+=1;
 
-        $sql="SELECT * FROM video_bin";
+        $sql = "INSERT INTO public.comment_bin (id,comment_id) VALUES ('".$comment_bin_id."','0')";
+        $result = pg_query($db_connection, $sql);
+        /////////////////////////////////////////////////////////////////////////////////////////
+        $sql="SELECT * FROM like_bin";
         $result = pg_query($db_connection, $sql);
         $rows = pg_num_rows($result);   //num row
-        $video_bin_id = pg_fetch_result($result, $rows-1 , 0);   // last id
+        $like_bin_id = pg_fetch_result($result, $rows-1 , 0);   // last id
+        $like_bin_id+=1;
+
+        $sql = "INSERT INTO public.like_bin (id,liked,user_id,video_id) VALUES ('".$like_bin_id."','0','0','0')";
+        $result = pg_query($db_connection, $sql);
         /////////////////////////////////////////////////////////////////////////////////////////
     
         $sql = "INSERT INTO video (name, date_of_load, description,
-        length, thumbnail, comment_bin_id, watched_number,video_bin_id) VALUES ('".$_POST['name']."','".$date_id."','".$_POST['description']."','".$_POST['pass']."',
-        '".$profile_id."','".$comment_bin_id."','0','".$video_bin_id."')";
+        length, thumbnail, comment_bin_id, watched_number,like_bin_id) VALUES ('".$_POST['name']."','".$date_id."','".$_POST['description']."','".$_POST['pass']."',
+        '".$profile_id."','".$comment_bin_id."','0','".$like_bin_id."')";
         $result = pg_query($db_connection, $sql);
     
-    }
+    }}
 }
 ?>
 <body>

@@ -8,7 +8,7 @@
 <h2>create channel:</h2>
 <?php
     if (isset($_POST['name']) && isset($_POST['description']) && isset($_POST['img']) && isset($_POST['dy']) && isset($_POST['dy2']) && isset($_POST['dy3'])){
-        echo "here";
+        if ($_POST['name']!="" && $_POST['description']!=""){
         $sql = "INSERT INTO image (image_source) VALUES ('".$_POST['img']."')";
         $result = pg_query($db_connection, $sql);   
     
@@ -25,27 +25,30 @@
         $rows = pg_num_rows($result);   //num row
         $date_id = pg_fetch_result($result, $rows-1 , 0);   // last id
         /////////////////////////////////////////////////////////////////////////////////////////date_id
-        $sql = "INSERT INTO channel_bin_video (video_id) VALUES ('0')";
-        $result = pg_query($db_connection, $sql);
-
         $sql="SELECT * FROM channel_bin_video";
         $result = pg_query($db_connection, $sql);
         $rows = pg_num_rows($result);   //num row
         $channel_bin_video_id = pg_fetch_result($result, $rows-1 , 0);   // last id
-        /////////////////////////////////////////////////////////////////////////////////////////
-        $sql = "INSERT INTO channel_bin_member (member_id) VALUES ('0')";
-        $result = pg_query($db_connection, $sql);
+        $channel_bin_video_id+=1;
 
+        
+        $sql = "INSERT INTO public.channel_bin_video (id,video_id) VALUES ('".$channel_bin_video_id."','0')";
+        $result = pg_query($db_connection, $sql);
+        /////////////////////////////////////////////////////////////////////////////////////////
         $sql="SELECT * FROM channel_bin_member";
         $result = pg_query($db_connection, $sql);
         $rows = pg_num_rows($result);   //num row
         $channel_bin_member_id = pg_fetch_result($result, $rows-1 , 0);   // last id
+        $channel_bin_member_id+=1;
+
+        $sql = "INSERT INTO public.channel_bin_member (id,member_id) VALUES ('".$channel_bin_member_id."','0')";
+        $result = pg_query($db_connection, $sql);
         /////////////////////////////////////////////////////////////////////////////////////////
         $sql = "INSERT INTO channel (name, date_of_made, picture,
         description,channel_bin_video_id, channel_bin_member_id) VALUES ('".$_POST['name']."','".$date_id."','".$profile_id."',
         '".$_POST['description']."','".$channel_bin_video_id."','".$channel_bin_member_id."')";
         $result = pg_query($db_connection, $sql);
-}
+}}
 ?>
 <body>
 <div class="w-100">

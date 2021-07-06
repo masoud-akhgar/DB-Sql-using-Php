@@ -5,83 +5,73 @@
 <link rel="stylesheet" href="bootstrap.min.css">
 </head>
 <hr><a href="index.php">main page</a>
-<h2>create channel:</h2>
+<h2>upload and delete video in channel:</h2>
 <?php
-// if (isset($_POST['userid'])){
-    if (isset($_POST['name']) && isset($_POST['description']) && isset($_POST['pass']) && isset($_POST['dy']) && isset($_POST['dy2']) && isset($_POST['dy3'])){
-        $sql="INSERT INTO `image`(`Id`, `image_source`) VALUES ('','".$_POST['img']."')";
-        $stmt = $connect->prepare($sql);
-        $stmt->execute();
-    
-        // get id = profile_id
-        $stmt = $connect->prepare("SELECT * FROM `image` ");
-        $stmt->execute();
-        $users = $stmt->fetchAll();
-        $profile_id=strval($users[sizeof($users)-1]["Id"]);
-        /////////////////////////////////////////////////////////////////////////////////////////
-        $sql="INSERT INTO `date`(`ID`, `day`, `month`, `year`) 
-        VALUES ('','".$_POST['dy']."','".$_POST['dy2']."','".$_POST['dy3']."')";
-        $stmt = $connect->prepare($sql);
-        $stmt->execute();
-    
-        // get id = date_id
-        $stmt = $connect->prepare("SELECT * FROM `date` ");
-        $stmt->execute();
-        $users = $stmt->fetchAll();
-        $date_id=strval($users[sizeof($users)-1]["ID"]);
-        /////////////////////////////////////////////////////////////////////////////////////////
-        $sql="INSERT INTO `channel_bin_video`(`ID`, `video_id`) VALUES ('','')";
-        $stmt = $connect->prepare($sql);
-        $stmt->execute();
-    
-        // get id = date_id
-        $stmt = $connect->prepare("SELECT * FROM `channel_bin_video` ");
-        $stmt->execute();
-        $users = $stmt->fetchAll();
-        $channel_bin_video_id=strval($users[sizeof($users)-1]["ID"]);
-        /////////////////////////////////////////////////////////////////////////////////////////
-        $sql="INSERT INTO `channel_bin_member`(`ID`, `member_id`) VALUES ('','')";
-        $stmt = $connect->prepare($sql);
-        $stmt->execute();
-    
-        // get id = date_id
-        $stmt = $connect->prepare("SELECT * FROM `channel_bin_member` ");
-        $stmt->execute();
-        $users = $stmt->fetchAll();
-        $channel_bin_member_id=strval($users[sizeof($users)-1]["ID"]);
-        /////////////////////////////////////////////////////////////////////////////////////////
-    
-        $sql="INSERT INTO `channel`(`ID`, `name`, `date_of_made`, `picture`, `description`, 
-        `Channel_Bin_video_id`, `Channel_Bin_member_id`)  
-        VALUES ('','".$_POST['name']."','".$date_id."','".$profile_id."','".$_POST['description']."',
-        '".$channel_bin_video_id."','".$channel_bin_member_id."')";//?
-        $stmt = $connect->prepare($sql);
-        $stmt->execute();
+    if( (isset($_POST['vid_id']) && isset($_POST['chan_id'])) || 
+    (isset($_POST['vid_name']) && isset($_POST['chan_name'])) ){
+        if(($_POST['vid_id']!="" && $_POST['chan_id']!="") || ($_POST['vid_name']!="" && $_POST['chan_name']!="")){
+            if($_POST['vid_id']!="" && $_POST['chan_id']!="" && isset($_POST["submit"])){
+                $sql="SELECT channel_bin_video_id FROM public.channel WHERE public.channel.id='".$_POST['chan_id']."'";
+                $result = pg_query($db_connection, $sql);
+                $bin_id = pg_fetch_result($result, 0 , 0); 
+                $sql ="INSERT INTO public.channel_bin_video(id,video_id) VALUES ('".$bin_id."','".$_POST['vid_id']."')";
+                $result = pg_query($db_connection, $sql);
+
+            }else if($_POST['vid_name']!="" && $_POST['chan_name']!="" && isset($_POST["submit"])){
+                $sql="SELECT channel_bin_video_id FROM public.channel WHERE public.channel.name='".$_POST['chan_name']."'";
+                $result = pg_query($db_connection, $sql);
+                $bin_id = pg_fetch_result($result, 0 , 0); 
+                $sql="SELECT video.id FROM public.video WHERE public.video.name='".$_POST['vid_name']."'";
+                $result = pg_query($db_connection, $sql);
+                $vid_id = pg_fetch_result($result, 0 , 0); 
+                $sql ="INSERT INTO public.channel_bin_video(id,video_id) VALUES ('".$bin_id."','".$vid_id."')";
+                $result = pg_query($db_connection, $sql);
+
+
+
+            }else if($_POST['vid_id']!="" && $_POST['chan_id']!="" && isset($_POST["submit2"])){
+                $sql="SELECT channel_bin_video_id FROM public.channel WHERE public.channel.id='".$_POST['chan_id']."'";
+                $result = pg_query($db_connection, $sql);
+                $bin_id = pg_fetch_result($result, 0 , 0); 
+                $sql ="DELETE FROM public.channel_bin_video WHERE channel_bin_video.id='".$bin_id."' and channel_bin_video.video_id='".$_POST['vid_id']."'";
+                $result = pg_query($db_connection, $sql);
+
+            }else if($_POST['vid_name']!="" && $_POST['chan_name']!="" && isset($_POST["submit2"])){
+                $sql="SELECT channel_bin_video_id FROM public.channel WHERE public.channel.name='".$_POST['chan_name']."'";
+                $result = pg_query($db_connection, $sql);
+                $bin_id = pg_fetch_result($result, 0 , 0); 
+                $sql="SELECT video.id FROM public.video WHERE public.video.name='".$_POST['vid_name']."'";
+                $result = pg_query($db_connection, $sql);
+                $vid_id = pg_fetch_result($result, 0 , 0); 
+
+                $sql ="DELETE FROM public.channel_bin_video WHERE channel_bin_video.id='".$bin_id."' and channel_bin_video.video_id='".$vid_id."'";
+                $result = pg_query($db_connection, $sql);
+            }
+        }
     }
-// }
 ?>
 <body>
-<?php 
-$stmt = $connect->prepare("SELECT * FROM `channel` ");
-$stmt->execute();
-$users = $stmt->fetchAll();
-foreach ($users as $user)
-echo " {$user['id']} {$user['name']} {$user['comment']}";
-?>
-<div class="w-100">
+            <div class="w-100">
 <form action="" method="post" id="form">
-<div class="d-flex">
+    <div class="d-flex">
                 <span class="col-2">add channel for user with ID?</span>
                 <input class=" col-md-2 form-control" name="userid" type="text" placeholder="یوزرآیدی">
         </div>
             <div class="d-flex">
                 <span class="col-2">اپلود ویدوئو در  کانال</span>
-                <input class=" col-md-2 form-control" name="name" type="text" placeholder=" آیدی ویدئو">
+                <input class=" col-md-2 form-control" name="vid_id" type="text" placeholder=" آیدی ویدئو">
                 <br>
-                <input class=" col-md-2 form-control" name="name" type="text" placeholder=" آیدی کانال">
-                </div>
-                <input class="offset-4 col-md-2 form-control alert-success" type="submit" value="اپلود ویدئو در کانال ">
+                <input class=" col-md-2 form-control" name="chan_id" type="text" placeholder=" آیدی کانال">
+            </div>
+            <div class="d-flex">
+                <span class="col-2">اپلود ویدوئو در  کانال</span>
+                <input class=" col-md-2 form-control" name="vid_name" type="text" placeholder=" نام ویدئو">
+                <br>
+                <input class=" col-md-2 form-control" name="chan_name" type="text" placeholder=" نام کانال">
+            </div>
+                <input class="offset-4 col-md-2 form-control alert-success" type="submit" name="submit" value="اپلود ویدئو در کانال ">
+                <input class="offset-4 col-md-2 form-control alert-success" type="submit" name="submit2" value="حذف ویدئو در کانال ">
             </form>
             </div>
-            </body>
+        </body>
 </html>

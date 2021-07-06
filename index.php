@@ -9,6 +9,9 @@
 <a href="insert_user.php">insert user</a><br>
 <a href="add_video.php">add video</a><br>
 <a href="create_channel.php">create channel</a><br>
-<a href="upload_video_channel.php">upload video in channel</a><br>
+<a href="upload_video_channel.php">upload and delete video in channel</a><br>
+<a href="watch_video.php">watch video</a><br>
+<a href="comment.php">comment (should be edited)</a><br>
+<a href="like_dislike.php">like_dislike</a><br>
 </body>
 </html>
