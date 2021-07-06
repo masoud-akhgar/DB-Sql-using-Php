@@ -1,0 +1,3 @@
+$sql = "INSERT INTO users (username, email, password,
+    date_of_membership, profile_id, User_Bin_Channel_id, User_Bin_Playlist_id) VALUES ('')";
+    $result = pg_query($db_connection, $sql);
