@@ -5,12 +5,11 @@
 <link rel="stylesheet" href="bootstrap.min.css">
 </head>
 <hr><a href="index.php">main page</a>
-<h2>upload and delete video in channel:</h2>
+<h2>upload and delete video in playlist:</h2>
 <?php
     if( (isset($_POST['vid_id']) && isset($_POST['chan_id'])) || 
     (isset($_POST['vid_name']) && isset($_POST['chan_name'])) ){
         if(($_POST['vid_id']!="" && $_POST['chan_id']!="") || ($_POST['vid_name']!="" && $_POST['chan_name']!="")){
-            echo "here";
             if($_POST['vid_id']!="" && $_POST['chan_id']!="" && isset($_POST["submit"])){
                 $sql="SELECT Playlist_Bin_id FROM public.Playlist WHERE public.Playlist.id='".$_POST['chan_id']."'";
                 $result = pg_query($db_connection, $sql);
@@ -32,7 +31,7 @@
             <div class="w-100">
 <form action="" method="post" id="form">
     <div class="d-flex">
-                <span class="col-2">add channel for user with ID?</span>
+                <span class="col-2">add playlist for user with ID?</span>
                 <input class=" col-md-2 form-control" name="userid" type="text" placeholder="یوزرآیدی">
         </div>
             <div class="d-flex">
@@ -41,8 +40,8 @@
                 <br>
                 <input class=" col-md-2 form-control" name="chan_id" type="text" placeholder=" آیدی پلی">
             </div>
-                <input class="offset-4 col-md-2 form-control alert-success" type="submit" name="submit" value="اپلود ویدئو در کانال ">
-                <input class="offset-4 col-md-2 form-control alert-success" type="submit" name="submit2" value="حذف ویدئو در کانال ">
+                <input class="offset-4 col-md-2 form-control alert-success" type="submit" name="submit" value="اپلود ویدئو در پلی لیست ">
+                <input class="offset-4 col-md-2 form-control alert-success" type="submit" name="submit2" value="حذف ویدئو در پلی لیست ">
             </form>
             </div>
         </body>

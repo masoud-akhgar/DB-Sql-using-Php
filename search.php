@@ -9,13 +9,28 @@
 <?php
     if(isset($_POST['vid_id']) ){
         if($_POST['vid_id']!="" ){
-            if($_POST['vid_id']!=""){   
-                $sql = "SELECT * FROM Playlist, video,channel WHERE Playlist.name LIKE '%".$_POST['vid_id']."%' OR channel.name LIKE '%".$_POST['vid_id']."%' OR video.name LIKE '%".$_POST['vid_id']."%'";
+            if($_POST['vid_id']!=""){  
+                $sql = "SELECT * FROM Playlist WHERE Playlist.name LIKE '%".$_POST['vid_id']."%'";
                 $result = pg_query($db_connection, $sql);
+                echo "in playlists:<br>";
                 while ($row = pg_fetch_row($result)) {
-                    var_dump($row);
+                    echo "id: ".$row[0]." and name: ".$row[1]."";
                     echo "<br>";
                   }
+                  $sql = "SELECT * FROM video WHERE video.name LIKE '%".$_POST['vid_id']."%'";
+                  $result = pg_query($db_connection, $sql);
+                  echo "in videos:<br>";
+                  while ($row = pg_fetch_row($result)) {
+                    echo "id: ".$row[0]." and name: ".$row[1]."";
+                      echo "<br>";
+                    }
+                $sql = "SELECT * FROM channel WHERE channel.name LIKE '%".$_POST['vid_id']."%'";
+                  $result = pg_query($db_connection, $sql);
+                  echo "in channels:<br>";
+                  while ($row = pg_fetch_row($result)) {
+                    echo "id: ".$row[0]." and name: ".$row[1]."";
+                      echo "<br>";
+                    }
             }
     }}
 ?>

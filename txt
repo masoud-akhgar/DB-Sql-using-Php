@@ -1,3 +1,8 @@
-$sql = "INSERT INTO users (username, email, password,
-    date_of_membership, profile_id, User_Bin_Channel_id, User_Bin_Playlist_id) VALUES ('')";
-    $result = pg_query($db_connection, $sql);
+$sql="SELECT * FROM watched_bin WHERE watched_bin.id='".$watch_bin_id."' and watched_bin.user_id='".$_POST['userid']."'";
+                $result = pg_query($db_connection, $sql);
+                $rows = pg_num_rows($result);   //all likes related sp. video and user
+
+                if($rows==0){
+                    $sql = "INSERT INTO watched_bin (id, user_id) VALUES ('".$like_id."','1','".$_POST['userid']."','".$_POST['vid_id']."')";
+                    $result = pg_query($db_connection, $sql);
+                }else{

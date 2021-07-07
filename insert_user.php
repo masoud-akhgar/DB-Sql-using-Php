@@ -52,6 +52,39 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['pass'])
     date_of_membership, profile_id, User_Bin_Channel_id, User_Bin_Playlist_id) VALUES ('".$_POST['username']."','".$_POST['email']."','".$password."',
     '".$date_id."','".$profile_id."','".$user_bin_channel_id."','".$user_bin_playlist_id."')";
     $result = pg_query($db_connection, $sql);
+
+    $sql="SELECT * FROM users";
+    $result = pg_query($db_connection, $sql);
+    $rows = pg_num_rows($result);   //num row
+    $user_id = pg_fetch_result($result, $rows-1 , 0);   // last id
+    /////////////////////////////////////////////////////////////////////////////////////////watch_later:
+    $sql="SELECT * FROM Playlist_Bin_id";
+        $result = pg_query($db_connection, $sql);
+        $rows = pg_num_rows($result);   //num row
+        $Playlist_Bin_id_id = pg_fetch_result($result, $rows-1 , 0);   // last id
+        $Playlist_Bin_id_id+=1;
+    
+        $sql="SELECT * FROM user_bin_playlist";
+        $result = pg_query($db_connection, $sql);
+        $rows = pg_num_rows($result);   //num row
+        $user_bin_playlist_id = pg_fetch_result($result, $rows-1 , 0);   // last id
+
+    $sql="SELECT * FROM Playlist";
+        $result = pg_query($db_connection, $sql);
+        $rows = pg_num_rows($result);   //num row
+        $Playlist_id = pg_fetch_result($result, $rows-1 , 0);   // last id
+        $Playlist_id+=1;
+
+        $sql = "INSERT INTO Playlist (id, name, privacy, user_id, playlist_bin_id) 
+        VALUES ('".$Playlist_id."','watch_later','0','".$user_id."','".$Playlist_Bin_id_id."')";
+        $result = pg_query($db_connection, $sql);
+        /////////////////////////////////////////////////////////////////////////////////////////
+
+        $sql = "INSERT INTO public.user_bin_playlist (id,playlist_create_id) VALUES ('".$user_bin_playlist_id."','".$Playlist_id."')";
+        $result = pg_query($db_connection, $sql);
+        /////////////////////////////////////////////////////////////////////////////////////////
+        
+
 }}
 
 ?>

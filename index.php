@@ -13,11 +13,14 @@
 <a href="watch_video.php">watch video</a><br>
 <a href="comment.php">comment (should be edited)</a><br>
 <a href="like_dislike.php">like_dislike</a><br>
-<a href="create_playlist.php">create_playlist</a><br>
-<a href="upload_video_playlist.php">upload and delete video in channel</a><br>
+<a href="create_playlist.php">create and delete playlist</a><br>
+<a href="upload_video_playlist.php">upload and delete video in playlist</a><br>
 <a href="public_playlist.php">public playlist</a><br>
 <a href="search.php">search</a><br>
 <a href="video_info.php">video_info</a><br>
+<a href="join_channel.php">join and leave channel</a><br>
+<a href="video_detail.php">video detail</a><br>
+<a href="channel_detail.php">channel detail</a><br>
 
 </body>
 </html>

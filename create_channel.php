@@ -48,6 +48,17 @@
         description,channel_bin_video_id, channel_bin_member_id) VALUES ('".$_POST['name']."','".$date_id."','".$profile_id."',
         '".$_POST['description']."','".$channel_bin_video_id."','".$channel_bin_member_id."')";
         $result = pg_query($db_connection, $sql);
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        $sql="SELECT * FROM channel";
+        $result = pg_query($db_connection, $sql);
+        $rows = pg_num_rows($result);   //num row
+        $channel_id = pg_fetch_result($result, $rows-1 , 0);   // last id
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        $sql="SELECT user_bin_Channel_id FROM public.users WHERE public.users.id='".$_POST['userid']."'";
+        $result = pg_query($db_connection, $sql);
+        $bin_id = pg_fetch_result($result, 0 , 0); 
+        $sql ="INSERT INTO public.user_bin_Channel (id, channel_membership_id, channel_created_id) VALUES ('".$bin_id."','0','".$channel_id."')";
+        $result = pg_query($db_connection, $sql);
 
         
 }}
