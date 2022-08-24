@@ -1,4 +1,6 @@
 - to see the sql tables and the size of project, please open ER.pdf
 - On this page, according to the users actions, different requests are defined and embedded in Php codes.
 
-
+According to ER diagram, I created tables in a way that the number of records to save data is minimized.
+For example, I used "Channel_Bin_video" table to be linked with "Channel" table, so we have just one record to link a channel of video to a special video.
+The types of connection between tables is revealed on ER diagram, so by watching the ER projects you can understand how the project was defined.
